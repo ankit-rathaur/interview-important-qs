@@ -1,0 +1,27 @@
+#incude<std
+using namespace
+struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+}; 
+vector<int> reverseLevelOrder(Node *root)
+{
+
+    
+    vector<int> v;
+queue<Node*> q;
+q.push(root);
+while(!q.empty())
+{
+root = q.front();
+q.pop();
+v.push_back(root -> data);
+if(root -> right) q.push(root -> right);
+if(root -> left) q.push(root -> left);
+}
+reverse(v.begin(), v.end());
+return v;
+
+}
