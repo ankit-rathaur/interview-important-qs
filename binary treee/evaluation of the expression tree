@@ -1,0 +1,28 @@
+int cal(int lft, string opr, int rgt){
+        switch(opr[0]){
+            case '+':
+                return lft + rgt;
+                break;
+            case '-':
+                return lft - rgt; 
+                break;
+            case '*':
+                return lft*rgt;
+                break;
+            case '/':
+                return lft/rgt;
+                break;
+        }
+    }
+    
+    int evalTree(node* root) {
+        // Your code here
+        if(root->left == nullptr && root->right == nullptr){
+            return stoi(root->data);
+        }
+        int lft = evalTree(root->left);
+        string opr = root->data;
+        int rgt = evalTree(root->right);
+        
+        return cal(lft,opr,rgt);
+    }
