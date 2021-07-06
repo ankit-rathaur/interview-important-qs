@@ -1,0 +1,24 @@
+Node * removeDuplicates( Node *head) 
+    {
+     
+     map<int,int> mp;
+     Node * cur=head;
+     mp[cur->data]=1;
+     Node *prev=cur;
+     cur=cur->next;
+     while(cur!=NULL)
+     {
+         if(mp[cur->data]){
+         prev->next=cur->next;
+         free(cur);}
+         else{
+             mp[cur->data]=1;
+             prev=cur;
+         }
+         cur=prev->next;
+     }
+     return head;
+    }
+    //time and space complexity is 0(n)
+    map use  kar rhe hai isliye n and linklist traverse ka bhi n lagega
+    
