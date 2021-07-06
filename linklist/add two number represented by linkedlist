@@ -1,0 +1,51 @@
+Expected Time Complexity: O(N+M).///jo bada hoga sayad na wala ya m wala tabhi m
++n lliya gya
+
+Expected Auxiliary Space: O(Max(N,M))///temp and result ke lieye
+
+
+Node * reverse(Node * head){
+        Node *next=NULL;
+        Node *prev=NULL;
+        Node *cur=head;
+        while(cur!=NULL)
+        {
+            next=cur->next;
+            cur->next=prev;
+            prev=cur;
+            cur=next;
+        }
+        return prev;
+    }
+    struct Node* addTwoLists(struct Node* first, struct Node* second)
+    {
+        // code here
+        first=reverse(first);
+        second=reverse(second);
+        int c=0;
+        int s=0;
+        Node *temp;
+        Node *cur=NULL;
+        Node *res=NULL;
+        while(first!=NULL || second!=NULL)
+        {
+            s=c+(first?first->data:0)+(second?second->data:0);
+            c=(s>=10)?1:0;
+            s=s%10;
+            temp= new Node(s);
+            if(res==NULL)
+            res=temp;
+            else cur->next=temp;
+            cur=temp;
+            if(first) first=first->next;
+            if(second)
+            second =second->next;
+        }
+        if(c>0){
+            temp=new Node(c);
+            cur->next=temp;
+            cur=temp;
+        }
+        res=reverse(res);
+        return res;
+    }
