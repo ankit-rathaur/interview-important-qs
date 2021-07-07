@@ -1,0 +1,10 @@
+Expected Time Complexity: O(Height of the BST)
+Expected Auxiliary Space: O(Height of the BST).
+
+int minValue(Node* root)
+{
+    // Code here
+    if(root->left)
+    return minValue(root->left);
+    else return root->data;
+}
