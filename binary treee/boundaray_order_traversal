@@ -1,0 +1,56 @@
+
+Expected Time Complexity: O(N). 
+Expected Auxiliary Space: O(Height of the Tree).
+
+
+
+void lefttree(Node * root,vector<int> &ans){
+        if(!root)return;
+        if(root->left)
+        {
+            ans.push_back(root->data);
+            lefttree(root->left,ans);
+        }
+        else if(root->right)
+        {
+            ans.push_back(root->data);
+            lefttree(root->right,ans);
+        }
+    }
+    void leaf(Node * root ,vector<int> &ans)
+    {
+        if(!root)return;
+        leaf(root->left,ans);
+       if(!root->left and !root->right)
+       ans.push_back(root->data);
+       leaf(root->right,ans);
+    }
+    
+      void rttree(Node * root,vector<int> &ans){
+        if(!root)return;
+        if(root->right)
+        {
+            
+            rttree(root->right,ans);
+            ans.push_back(root->data);
+        }
+      else if(root->left)
+        {
+            
+            rttree(root->left,ans);
+            ans.push_back(root->data);
+        }
+    }
+    vector <int> printBoundary(Node *root)
+    {
+        //Your code here
+        vector<int>ans;
+        ans.push_back(root->data);
+        lefttree(root->left,ans);
+        leaf(root,ans);
+        rttree(root->right,ans);
+       return ans;
+    }
+    
+    
+    
