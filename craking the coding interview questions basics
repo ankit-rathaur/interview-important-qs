@@ -1,0 +1,364 @@
+Craking the coding interview
+
+Linked list 
+
+Intersection point of two linked list.
+Length nikal kar common wala dekh lo.
+/****************************************************************
+ 
+    Following is the class structure of the Node class:
+
+        class Node
+        {
+        public:
+	        int data;
+	        Node *next;
+	        Node(int data)
+	        {
+		        this->data = data;
+		        this->next = NULL;
+	        }
+        };
+
+*****************************************************************/
+int findLength(const Node* root){
+   	int res = 0;
+    while(root != nullptr){
+       	res++;
+        root = root->next;
+   }	
+    return res;
+}
+int findIntersection(Node *firstHead, Node *secondHead)
+{
+    //Write your code here
+    int res = -1;
+    int fl = findLength(firstHead);
+    int sl = findLength(secondHead);
+    int diff = abs(fl - sl);
+    if(fl >= sl){
+        while(diff--){
+            firstHead = firstHead->next;
+        }
+    }	
+    else{
+        while(diff--){
+            secondHead = secondHead->next;
+        }
+    }
+    
+    while(firstHead && secondHead){
+        if(firstHead == secondHead){
+            return firstHead->data;
+        }
+        firstHead = firstHead->next;
+        secondHead = secondHead->next;
+    }
+    return -1;
+}
+
+remove duplicates from unsorted linked list
+Make use of set.
+/****************************************************************
+    Following is the class structure of the Node class:
+    class Node
+    {
+    public:
+        int data;
+        Node *next;
+        Node(int data)
+        {
+            this->data = data;
+            this->next = NULL;
+        }
+    };
+*****************************************************************/
+#include<unordered_set>
+Node *removeDuplicates(Node *head)
+{
+    // Write your code here
+    unordered_set<int> st;
+    Node* prev = nullptr;
+    for(Node* temp = head;temp != nullptr;){
+        
+        if(st.find(temp->data) == st.end()){
+            st.insert(temp->data);
+            prev = temp;
+            temp = temp->next;      
+        }
+        else{
+            prev->next =  temp->next;
+            free(temp);
+            temp = prev->next;
+            
+        }
+    }
+    return head;
+}
+
+Note : Palindrome of a linked list mai pehle fast pointer and slow pointer chalao to get the mid point then reverse the slow pointer and then compare things .
+
+Adding two linked list 
+/************************************************************
+
+    Following is the linked list node structure:
+    
+    template <typename T>
+    class Node {
+        public:
+        T data;
+        Node* next;
+
+        Node(T data) {
+            next = NULL;
+            this->data = data;
+        }
+    };
+
+************************************************************/
+Node<int>* reversed(Node<int>* root){
+    Node<int>* prev = nullptr;
+    while(root != nullptr)
+    {	
+        Node<int>* next = root->next;
+        root->next = prev;
+        prev = root;
+        root = next;
+    }
+    return prev;
+}
+Node<int>* addTwoLists(Node<int>* first, Node<int>* second) {
+    // Write your code here.
+    first = reversed(first);
+    second = reversed(second);
+    Node<int>* res = new Node<int>(0);
+    Node<int>* resp = res;
+    int carry = 0;
+    
+    while(first && second){
+        res->data = (first->data + second->data + carry)%10;
+        if(first->data + second->data + carry >= 10) carry = 1;
+        else carry = 0;
+        if(first->next || second->next){
+            res->next = new Node<int>(0);
+            res = res->next;
+        }
+        first = first->next;
+        second = second->next;
+    }
+    while(first){
+        res->data = (first->data + carry)%10;
+        if(first->data + carry >= 10) carry = 1;
+        else carry = 0;
+        if(first->next){
+            res->next = new Node<int>(0);
+            res = res->next;
+        }
+        first = first->next;
+    }
+    while(second){
+        res->data = (second->data + carry)%10;
+        if(second->data + carry >= 10) carry = 1;
+        else
+            carry = 0;
+        if(second->next){
+            res->next = new Node<int>(0);
+            res = res->next;
+        }
+        second = second->next;
+    }
+    
+    if(carry == 1){
+        res->next = new Node<int>(carry);
+    }
+    return reversed(resp);
+    
+}
+
+Delete a node from the given linked list.
+
+
+*****************************************************************/
+
+void deleteNode(LinkedListNode<int> * node) {
+    // Write your code here.
+    LinkedListNode<int> * prev = nullptr;
+    while(node->next){
+        node->data = node->next->data;
+        prev = node;
+        node = node->next;
+    }
+    prev->next = nullptr;
+    
+}
+
+Loop detection in Linked List.
+The slow and fast pointer technique.
+Pehle badhao phir check karo.
+class Solution
+{
+    public:
+    //Function to check if the linked list has a loop.
+    bool detectLoop(Node* head)
+    {
+        Node* slow = head;
+        Node* fast = head;
+        
+        while(slow && fast && fast->next){
+            slow = slow->next;
+            fast = fast->next->next;
+            if(slow == fast){
+                return true;
+            }
+        }
+        return false;
+    }
+};
+
+
+Binary search tree ################################################
+
+Validate the binary search tree.
+
+	/*************************************************************
+ 
+    Following is the Binary Tree node structure
+
+    class BinaryTreeNode 
+    {
+    public : 
+        T data;
+        BinaryTreeNode<T> *left;
+        BinaryTreeNode<T> *right;
+
+        BinaryTreeNode(T data) {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+*************************************************************/
+
+bool validateBST(BinaryTreeNode<int> *root) {
+    // Write your code here
+    if(root == nullptr || (root->left == nullptr && root->right == nullptr)) return true;
+    if(root->right && root->left){
+        if(root->data < root->left->data || root->data > root->right->data) return false;
+    }
+    else if(root->left){
+        if(root->data < root->left->data ) return false;
+    }
+    else{
+        if(root->data > root->right->data) return false;
+    }
+    
+    return validateBST(root->left) && validateBST(root->right);
+    
+}
+
+
+Is S is a subtree of T
+Check each node as weather is a same tree as s or not.
+bool compareThings(TreeNode<int> *t, TreeNode<int> *s){
+    if(t == nullptr && s == nullptr) return true;
+    if(t != nullptr && s != nullptr){
+   		bool cl = compareThings(t->left,s->left);
+        bool cn;
+        if(t->val == s->val) cn = true;
+        else cn = false;
+        bool cr = compareThings(t->right,s->right);
+        return cl&cn&cr;
+    }
+    return false;
+}
+bool preorder(TreeNode<int>* t,TreeNode<int>*s){
+    if(t != nullptr){
+        bool res = compareThings(t,s);
+        bool cl = preorder(t->left,s);
+        bool cr = preorder(t->right,s);       
+        return res | cl | cr;
+    }
+    return false;
+}
+bool isSubtree(TreeNode<int> *T, TreeNode<int> *S)
+{
+    // Write your code here\
+    if(T == nullptr && S == nullptr) return true;
+    return preorder(T,S);
+}
+
+Predecessor and successor in inorder traversal of bst.
+
+void inorder(Node *root, int key,Node*& pre, Node*& suc){
+    if(root != nullptr){
+        inorder(root->left,key,pre,suc);
+        if(root->key < key) pre = root;
+        if(root->key > key && suc == nullptr) suc = root;
+        inorder(root->right,key,pre,suc);
+    }
+}
+void findPreSuc(Node* root, Node*& pre, Node*& suc, int key)
+{
+    pre = nullptr;
+    suc = nullptr;
+    
+    inorder(root,key,pre,suc);
+
+
+}
+
+Preorder traversal iterative solution.
+
+void itrativepre(Node* root,vector<int> &res){
+    stack<Node*> st;
+    unordered_map<Node*,int> mp;
+    
+    st.push(root);
+    
+    while(!st.empty()){
+        Node* t = st.top();
+        if(mp[t] == 0)
+            res.emplace_back(t->data);
+        if(t->left == nullptr) mp[t]++;
+        // if(t->right == nullptr) mp[t]++;
+        if(t->left && mp[t] == 0){
+            st.push(t->left);
+            mp[t]++;
+        }
+        else if(t->right && mp[t] == 1){
+            st.push(t->right);
+            mp[t]++;
+        }else{
+            st.pop();
+        }
+    }
+    
+}
+vector<int> preOrder(Node* root)
+{
+    //code here
+    vector<int> res;
+    itrativepre(root,res);
+    return res;
+}
+
+Forming a Mirror tree of a given tree.
+// just use the postorder traversal and some swapping.
+void swapN(struct Node* currLeft, struct Node* currRight, struct Node* root){
+    struct Node* temp = currLeft;
+    root->left = currRight;
+    root->right = temp;
+}
+
+void mirror(struct Node* node) {
+    // code here
+    if(node){
+        mirror(node->left);
+        mirror(node->right);
+        swapN(node->left,node->right,node);
+    }
+    
+}
+
+
